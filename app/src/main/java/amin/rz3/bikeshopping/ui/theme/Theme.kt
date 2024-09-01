@@ -11,6 +11,11 @@ private val BikeShoppingPallete = BikeShoppingColors(
     uiBackground = bgColor,
     blueGradient = listOf(blueGradient1, blueGradient2),
     cardGradient = listOf(cardGradient1, cardGradient2),
+    cardColor1 = cardGradient1,
+    cardColor2 = cardGradient2,
+    bottomSheetBtn = bottomSheetBtn,
+    bottomSheetBtn2 = bottomSheetBtn2,
+    bottomSheetText = bottomSheetText,
 )
 
 @Composable
@@ -29,7 +34,12 @@ fun BikeShoppingTheme(
 data class BikeShoppingColors(
     val uiBackground: Color,
     val blueGradient: List<Color>,
-    val cardGradient: List<Color>
+    val cardGradient: List<Color>,
+    val cardColor1: Color,
+    val cardColor2: Color,
+    val bottomSheetBtn: Color,
+    val bottomSheetBtn2: Color,
+    val bottomSheetText: Color,
 )
 
 object BikeShoppingTheme {

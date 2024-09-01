@@ -1,7 +1,8 @@
 package amin.rz3.bikeshopping
 
 data class BikeSharedElementKey(
-    val id: Int,
+    val index: Int,
+    val currentPage: Int,
     val type: BikeSharedElementType
 )
 

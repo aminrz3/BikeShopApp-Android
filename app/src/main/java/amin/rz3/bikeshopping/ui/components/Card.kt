@@ -20,10 +20,10 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 
 @Composable
-fun BikeCard(){
+fun BikeCard(modifier: Modifier = Modifier){
     val gradient =  BikeShoppingTheme.colors.cardGradient
     Canvas(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         val rect = Rect(Offset.Zero, size)

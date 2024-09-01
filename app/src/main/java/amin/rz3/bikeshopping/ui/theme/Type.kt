@@ -27,6 +27,13 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         fontSize = 13.sp,
         color = TextColor
+    ),
+
+    labelSmall = TextStyle(
+        fontFamily = BikeFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 15.sp,
+        color = TextColor
     )
 
     /* Other default text styles to override

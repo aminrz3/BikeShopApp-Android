@@ -14,6 +14,7 @@ import amin.rz3.bikeshopping.ui.itemdetail.nonSpatialExpressiveSpring
 import amin.rz3.bikeshopping.ui.theme.Typography
 import amin.rz3.bikeshopping.ui.theme.cardGradient1
 import amin.rz3.bikeshopping.ui.theme.cardGradient2
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -28,7 +29,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -42,19 +46,27 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun Item(
-    @PreviewParameter(ShopItemsProvider::class) itemDetail: ItemDetail, onClick: () -> Unit
+    @PreviewParameter(ShopItemsProvider::class) itemDetail: ItemDetail, index:Int, currentPage:Int, onClick: () -> Unit,
 ) {
-    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2)
+    val configuration = LocalConfiguration.current
+    val itemSize = remember(configuration.screenWidthDp) {
+        (configuration.screenWidthDp.dp / 2)
+    }
     val paddingTop = if (itemDetail.id % 2 == 0) 0.dp else 25.dp
     val sharedTransitionScope = LocalSharedTransitionScope.current
         ?: throw IllegalStateException("No SharedElementScope found")
@@ -74,14 +86,15 @@ fun Item(
                 .sharedBounds(
                     rememberSharedContentState(
                         key = BikeSharedElementKey(
-                            id = itemDetail.id,
+                            index = index,
+                            currentPage = currentPage,
                             type = BikeSharedElementType.Background
                         )
                     ),
                     animatedVisibilityScope,
                     boundsTransform = bikeDetailBoundsTransform,
                     exit = fadeOut(nonSpatialExpressiveSpring()),
-                    enter = fadeIn(nonSpatialExpressiveSpring()),
+                    enter = fadeIn(nonSpatialExpressiveSpring())
                 ),
         ) {
 
@@ -93,22 +106,26 @@ fun Item(
                     .align(alignment = Alignment.TopEnd)
                     .padding(top = 25.dp, end = 25.dp)
             )
-            Image(
-                painter = painterResource(id = itemDetail.img),
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(itemDetail.img)
+                    .crossfade(true)
+                    .build(),
+                placeholder = debugPlaceholder(debugPreview = R.drawable.helmet),
                 contentDescription = "",
-                modifier = Modifier
-                    .sharedBounds(
-                        sharedContentState = rememberSharedContentState(
-                            key = BikeSharedElementKey(
-                                id = itemDetail.id,
-                                type = BikeSharedElementType.Image
-                            )
-                        ),
-                        animatedVisibilityScope = animatedVisibilityScope,
-                        boundsTransform = bikeDetailBoundsTransform,
-                        enter = fadeIn(nonSpatialExpressiveSpring()),
-                        exit = fadeOut(nonSpatialExpressiveSpring())
-                    )
+                modifier = Modifier.fillMaxSize().sharedBounds(
+                    sharedContentState = rememberSharedContentState(
+                        key = BikeSharedElementKey(
+                            index = index,
+                            currentPage = currentPage,
+                            type = BikeSharedElementType.Image
+                        )
+                    ),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    boundsTransform = bikeDetailBoundsTransform,
+                    enter = fadeIn(nonSpatialExpressiveSpring()),
+                    exit = fadeOut(nonSpatialExpressiveSpring())
+                )
                     .align(alignment = Alignment.Center)
                     .padding(bottom = 50.dp, start = 25.dp, end = 25.dp),
             )
@@ -146,3 +163,11 @@ fun Item(
         }
     }
 }
+
+@Composable
+fun debugPlaceholder(@DrawableRes debugPreview: Int) =
+    if (LocalInspectionMode.current) {
+        painterResource(id = debugPreview)
+    } else {
+        null
+    }

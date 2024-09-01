@@ -2,5 +2,8 @@
     <string name="app_name">BikeShopping</string>
     <string name="ChooseYourBike">Choose Your Bike</string>
     <string name="BannerTitle">30% Off</string>
+    <string name="description">Description</string>
+    <string name="specification">Specification</string>
+    <string name="addToCart">Add to Cart</string>
     <string name="emptyPage">Develop it yourself, I am not going to complete everything:)))</string>
 </resources>

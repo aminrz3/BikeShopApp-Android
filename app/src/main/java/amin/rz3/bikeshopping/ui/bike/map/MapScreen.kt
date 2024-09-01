@@ -23,27 +23,15 @@ import androidx.compose.ui.text.style.TextAlign
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MapScreen() {
-    val visibleScreen = remember { mutableStateOf(true) }
-
-    AnimatedContent(
-        targetState = visibleScreen.value,
-        transitionSpec = {
-            slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) + fadeIn() togetherWith
-                    slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth }) + fadeOut()
-        }
-    ){ targetVisible ->
-        if (targetVisible) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
-                Text(
-                    text = stringResource(id = R.string.emptyPage),
-                    style = Typography.titleLarge,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        Text(
+            text = stringResource(id = R.string.emptyPage),
+            style = Typography.titleLarge,
+            textAlign = TextAlign.Center
+        )
     }
 }
