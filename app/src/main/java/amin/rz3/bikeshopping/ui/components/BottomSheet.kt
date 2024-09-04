@@ -5,19 +5,11 @@ import amin.rz3.bikeshopping.data.models.ItemDetail
 import amin.rz3.bikeshopping.ui.commons.Helper
 import amin.rz3.bikeshopping.ui.theme.BikeShoppingTheme
 import amin.rz3.bikeshopping.ui.theme.Typography
-import android.graphics.BlurMaskFilter
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
-import android.util.EventLogTags.Description
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,9 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
@@ -40,20 +30,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.geometry.toRect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.drawOutline
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -64,8 +44,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun BikeBottomSheet(modifier: Modifier = Modifier, itemDetail:ItemDetail,onSheetStateChange: (SheetValue) -> Unit) {
     val configuration = LocalConfiguration.current
-    val expandedHeight = (configuration.screenHeightDp/1.5).dp
-    val collapsedHeight = 160.dp
+    val expandedHeight = (configuration.screenHeightDp/1.2).dp
+    val collapsedHeight = 130.dp
     var sheetOffset by remember { mutableStateOf(collapsedHeight) }
 
     val animatedHeight by animateDpAsState(
@@ -158,7 +138,7 @@ fun BottomSheetContent(itemDetail: ItemDetail,modifier: Modifier = Modifier) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 45.dp, vertical = 15.dp),
+                    .padding(horizontal = 25.dp, vertical = 15.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ){
                 if (tab=="Description"){
@@ -249,7 +229,7 @@ fun BottomSheetContent(itemDetail: ItemDetail,modifier: Modifier = Modifier) {
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Text(
-                        text = Helper.formatPrice(itemDetail.price),
+                        text = Helper.formatPrice(itemDetail.price.toInt()),
                         style = Typography.labelSmall.copy(
                             fontSize = 24.sp,
                             color = BikeShoppingTheme.colors.bottomSheetText

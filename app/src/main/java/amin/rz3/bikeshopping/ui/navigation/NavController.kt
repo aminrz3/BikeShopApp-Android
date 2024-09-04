@@ -1,5 +1,6 @@
 package amin.rz3.bikeshopping.ui.navigation
 
+import amin.rz3.bikeshopping.data.models.ItemDetail
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -7,11 +8,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.gson.Gson
 
 object MainDestinations {
     const val BIKE_ROUTE = "bike"
-    const val CURRENT_PAGE_KEY = "currentPage"
-    const val ITEM_DETAIL_INDEX = "index"
+    const val ITEM_DETAIL_DATA = "data"
     const val ITEM_DETAIL_ROUTE = "ItemDetail"
 }
 
@@ -31,9 +32,10 @@ class BikeNavController(
         navController.navigateUp()
     }
 
-    fun navigateToItemDetail(currentPage: Int, index: Int, from: NavBackStackEntry) {
+    fun navigateToItemDetail(itemDetail: ItemDetail, from: NavBackStackEntry) {
         if (from.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-            navController.navigate("${MainDestinations.ITEM_DETAIL_ROUTE}/$currentPage?index=$index")
+            val itemDetailJson = Gson().toJson(itemDetail)
+            navController.navigate("${MainDestinations.ITEM_DETAIL_ROUTE}?data=${itemDetailJson}")
         }
     }
 }

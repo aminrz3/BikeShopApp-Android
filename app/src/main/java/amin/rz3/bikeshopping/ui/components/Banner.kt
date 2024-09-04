@@ -1,12 +1,11 @@
 package amin.rz3.bikeshopping.ui.components
 
 import amin.rz3.bikeshopping.R
-import amin.rz3.bikeshopping.ui.theme.BikeFontFamily
+import amin.rz3.bikeshopping.data.models.Banner
 import amin.rz3.bikeshopping.ui.theme.Typography
 import amin.rz3.bikeshopping.ui.theme.cardGradient1
 import amin.rz3.bikeshopping.ui.theme.cardGradient2
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -31,25 +30,18 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
-@OptIn(ExperimentalFoundationApi::class)
-@Preview
 @Composable
-fun Banner() {
-    val banners = listOf(
-        R.drawable.banner_sample,
-        R.drawable.banner_sample,
-        R.drawable.banner_sample,
-    )
+fun Banner(banners:List<Banner>) {
     val state = rememberPagerState(pageCount = {banners.size})
-    HorizontalPager(state = state) {img->
+    HorizontalPager(state = state) {index->
         Box(
             modifier = Modifier
                 .padding(16.dp)
@@ -57,8 +49,11 @@ fun Banner() {
                 .height(240.dp)
         ){
             BannerCard()
-            Image(
-                painter = painterResource(id = banners[img]),
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(banners[index].image)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -66,7 +61,7 @@ fun Banner() {
                     .padding(bottom = 55.dp, top = 25.dp)
                 )
             Text(
-                text = stringResource(id = R.string.BannerTitle),
+                text = banners[index].text,
                 style = Typography.titleLarge.copy(
                     color = Color.White.copy(alpha = 0.6f),
                     fontSize = 26.sp

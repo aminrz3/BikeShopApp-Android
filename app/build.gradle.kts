@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.kotlinAndroidKsp)
+    alias(libs.plugins.kotlinKapt)
 }
 
 android {
@@ -75,4 +78,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //retrofit
+    implementation(libs.retrofit)
+    implementation (libs.gson)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+
+
+    //dagger
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
 }
